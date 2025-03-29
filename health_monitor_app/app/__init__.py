@@ -59,7 +59,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     
     from .health_data import health_data as health_data_blueprint
-    app.register_blueprint(health_data_blueprint, url_prefix='/health')
+    app.register_blueprint(health_data_blueprint)
     
     # Register main routes
     from . import routes

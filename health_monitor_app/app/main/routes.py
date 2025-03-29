@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     ResponseType = Union[str, WerkzeugResponse, Response]
 
 @main.route('/')
-def index() -> ResponseType:
+def index() :
     """
     Display the landing page for non-authenticated users.
     If user is logged in, redirect to dashboard.

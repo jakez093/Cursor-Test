@@ -33,12 +33,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'health_data.health_records' %}active{% endif %}" href="{{ url_for('health_data.health_records') }}">
+                        <a class="nav-link {% if request.endpoint == 'health_data.history' %}active{% endif %}" href="{{ url_for('health_data.history') }}">
                             <i class="fas fa-list me-1"></i> Records
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.endpoint == 'health_data.graphs' %}active{% endif %}" href="{{ url_for('health_data.graphs') }}">
+                        <a class="nav-link {% if request.endpoint == 'health_data.view_graph' %}active{% endif %}" href="{{ url_for('health_data.view_graph', parameter='weight') }}">
                             <i class="fas fa-chart-line me-1"></i> Graphs
                         </a>
                     </li>

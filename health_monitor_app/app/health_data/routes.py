@@ -58,23 +58,7 @@ VALID_TIME_PERIODS = ['week', 'month', 'quarter']
 ERROR_GENERIC = 'An unexpected error occurred. Please try again.'
 
 # Create blueprint
-health_data = Blueprint('health_data', __name__)
-
-@health_data.route('/dashboard')
-@login_required
-def dashboard():
-    """
-    Display the user dashboard with health data summary.
-    
-    Shows recent health metrics and provides navigation to detailed views.
-    """
-    # Get user's most recent health data entry
-    recent_data = HealthData.query.filter_by(user_id=current_user.id).order_by(
-        HealthData.date.desc()).first()
-        
-    return render_template('health_data/dashboard.html', 
-                           title='Dashboard',
-                           recent_data=recent_data)
+# health_data = Blueprint('health_data', __name__)
 
 @health_data.route('/add', methods=['GET', 'POST'])
 @login_required
@@ -112,12 +96,12 @@ def add_health_data():
             db.session.commit()
             
             flash('Health data added successfully!', 'success')
-            return redirect(url_for('health_data.view_all_data'))
+            return redirect(url_for('health_data.history'))
         except Exception:
             db.session.rollback()
             flash(ERROR_GENERIC, 'error')
     
-    return render_template('health_data/add_data.html', 
+    return render_template('health_data/add.html', 
                            title='Add Health Data', 
                            form=form)
 
