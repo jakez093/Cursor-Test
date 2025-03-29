@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Health Monitor{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">Welcome to Health Monitor</h1>
+        <p class="lead">Track your health data, visualize trends, and take control of your wellbeing.</p>
+        
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h3 class="h5">Track Your Health</h3>
+                        <p>Record vital signs, physical activity, sleep, nutrition, and more.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h3 class="h5">Visualize Trends</h3>
+                        <p>See how your health metrics change over time with visual charts.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h3 class="h5">Stay Motivated</h3>
+                        <p>Set goals, track progress, and maintain a healthy lifestyle.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-3">Register Now</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">Log In</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Security Error</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <h5 class="alert-heading">CSRF Validation Failed</h5>
+                        <p>For your security, this request has been blocked because it appears to be a cross-site request forgery attempt.</p>
+                        {% if reason %}
+                        <hr>
+                        <p class="mb-0"><strong>Error details:</strong> {{ reason }}</p>
+                        {% endif %}
+                    </div>
+                    <p>This error commonly occurs if:</p>
+                    <ul>
+                        <li>Your form session has expired</li>
+                        <li>You've opened the form in multiple browser tabs</li>
+                        <li>Your browser cookies are disabled</li>
+                    </ul>
+                    <p>Please try the following:</p>
+                    <ul>
+                        <li>Go back to the previous page and refresh</li>
+                        <li>Try submitting the form again</li>
+                        <li>If the problem persists, please <a href="{{ url_for('main.dashboard') }}">return to your dashboard</a> and try again</li>
+                    </ul>
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">Return to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Health Monitor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Dashboard</h1>
+            <a href="{{ url_for('health_data.add_health_data') }}" class="btn btn-primary">Add Health Data</a>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="h5 mb-0">Latest Health Metrics</h3>
+            </div>
+            <div class="card-body">
+                {% if latest_data %}
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-light h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Weight</h5>
+                                <p class="display-6">{{ latest_data.weight or '—' }} <small class="text-muted">kg</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-light h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Blood Pressure</h5>
+                                <p class="display-6">
+                                    {% if latest_data.blood_pressure_systolic and latest_data.blood_pressure_diastolic %}
+                                        {{ latest_data.blood_pressure_systolic }}/{{ latest_data.blood_pressure_diastolic }} <small class="text-muted">mmHg</small>
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-light h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Heart Rate</h5>
+                                <p class="display-6">{{ latest_data.heart_rate or '—' }} <small class="text-muted">bpm</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card border-light h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Steps</h5>
+                                <p class="display-6">{{ latest_data.steps or '—' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-center">No health data recorded yet. <a href="{{ url_for('health_data.add_health_data') }}">Add your first entry</a>.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if charts %}
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="h4 mb-3">Health Trends</h3>
+    </div>
+    
+    {% if charts.weight %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Weight Trend</div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ charts.weight }}" class="img-fluid" alt="Weight Trend">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if charts.blood_pressure %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Blood Pressure Trend</div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ charts.blood_pressure }}" class="img-fluid" alt="Blood Pressure Trend">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if charts.heart_rate %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Heart Rate Trend</div>
+            <div class="card-body text-center">
+                <img src="data:image/png;base64,{{ charts.heart_rate }}" class="img-fluid" alt="Heart Rate Trend">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if not latest_data and not charts %}
+<div class="row">
+    <div class="col-md-12 text-center mt-5">
+        <div class="alert alert-info">
+            <h4>Welcome to your Health Dashboard!</h4>
+            <p>Start tracking your health data to see trends and insights here.</p>
+            <a href="{{ url_for('health_data.add_health_data') }}" class="btn btn-primary mt-3">Add Your First Entry</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %} 

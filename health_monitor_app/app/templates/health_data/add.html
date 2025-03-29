@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Add Health Data - Health Monitor{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h1>Add Health Data</h1>
+        <p class="text-muted">Record your health metrics for tracking and analysis.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="h5 mb-0">Vital Signs</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.weight.label(class="form-label") }}
+                            {{ form.weight(class="form-control" + (" is-invalid" if form.weight.errors else "")) }}
+                            {% for error in form.weight.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.temperature.label(class="form-label") }}
+                            {{ form.temperature(class="form-control" + (" is-invalid" if form.temperature.errors else "")) }}
+                            {% for error in form.temperature.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.blood_pressure_systolic.label(class="form-label") }}
+                            {{ form.blood_pressure_systolic(class="form-control" + (" is-invalid" if form.blood_pressure_systolic.errors else "")) }}
+                            {% for error in form.blood_pressure_systolic.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.blood_pressure_diastolic.label(class="form-label") }}
+                            {{ form.blood_pressure_diastolic(class="form-control" + (" is-invalid" if form.blood_pressure_diastolic.errors else "")) }}
+                            {% for error in form.blood_pressure_diastolic.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.heart_rate.label(class="form-label") }}
+                            {{ form.heart_rate(class="form-control" + (" is-invalid" if form.heart_rate.errors else "")) }}
+                            {% for error in form.heart_rate.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.oxygen_saturation.label(class="form-label") }}
+                            {{ form.oxygen_saturation(class="form-control" + (" is-invalid" if form.oxygen_saturation.errors else "")) }}
+                            {% for error in form.oxygen_saturation.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="h5 mb-0">Physical Activity</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            {{ form.steps.label(class="form-label") }}
+                            {{ form.steps(class="form-control" + (" is-invalid" if form.steps.errors else "")) }}
+                            {% for error in form.steps.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {{ form.exercise_duration.label(class="form-label") }}
+                            {{ form.exercise_duration(class="form-control" + (" is-invalid" if form.exercise_duration.errors else "")) }}
+                            {% for error in form.exercise_duration.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {{ form.calories_burned.label(class="form-label") }}
+                            {{ form.calories_burned(class="form-control" + (" is-invalid" if form.calories_burned.errors else "")) }}
+                            {% for error in form.calories_burned.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="h5 mb-0">Sleep & Nutrition</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.sleep_duration.label(class="form-label") }}
+                            {{ form.sleep_duration(class="form-control" + (" is-invalid" if form.sleep_duration.errors else "")) }}
+                            {% for error in form.sleep_duration.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.sleep_quality.label(class="form-label") }}
+                            {{ form.sleep_quality(class="form-control" + (" is-invalid" if form.sleep_quality.errors else "")) }}
+                            {% for error in form.sleep_quality.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.water_intake.label(class="form-label") }}
+                            {{ form.water_intake(class="form-control" + (" is-invalid" if form.water_intake.errors else "")) }}
+                            {% for error in form.water_intake.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.calorie_intake.label(class="form-label") }}
+                            {{ form.calorie_intake(class="form-control" + (" is-invalid" if form.calorie_intake.errors else "")) }}
+                            {% for error in form.calorie_intake.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="h5 mb-0">Mental Health</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.stress_level.label(class="form-label") }}
+                            {{ form.stress_level(class="form-control" + (" is-invalid" if form.stress_level.errors else "")) }}
+                            {% for error in form.stress_level.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.mood.label(class="form-label") }}
+                            {{ form.mood(class="form-control" + (" is-invalid" if form.mood.errors else "")) }}
+                            {% for error in form.mood.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="h5 mb-0">Notes</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            {{ form.notes.label(class="form-label") }}
+                            {{ form.notes(rows=3, class="form-control" + (" is-invalid" if form.notes.errors else "")) }}
+                            {% for error in form.notes.errors %}
+                            <div class="invalid-feedback">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2 mb-4">
+                {{ form.submit(class="btn btn-primary btn-lg") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

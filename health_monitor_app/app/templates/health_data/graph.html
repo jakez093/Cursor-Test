@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - Health Monitor{% endblock %}
+
+{% block styles %}
+<style>
+    .parameter-selector {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .parameter-pill {
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        background: var(--lighter);
+        color: var(--dark);
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    .parameter-pill:hover {
+        background: rgba(44, 123, 229, 0.1);
+    }
+    
+    .parameter-pill.active {
+        background: var(--primary);
+        color: white;
+    }
+    
+    .info-box {
+        background: var(--light);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        border-left: 4px solid var(--info);
+    }
+    
+    .info-box h4 {
+        color: var(--info);
+        margin-bottom: 1rem;
+    }
+    
+    .graph-card {
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+    }
+    
+    .graph-card:hover {
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .graph-header {
+        padding: 1.25rem 1.5rem;
+        background: var(--white);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .navigation-arrows {
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        pointer-events: none;
+        z-index: 10;
+        padding: 0 1rem;
+    }
+    
+    .nav-arrow {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        transition: all 0.2s ease;
+        pointer-events: auto;
+        color: var(--primary);
+    }
+    
+    .nav-arrow:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: scale(1.1);
+    }
+    
+    .nav-arrow i {
+        font-size: 1.25rem;
+    }
+    
+    .period-indicator {
+        font-weight: 500;
+        color: var(--primary);
+        text-align: center;
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('health_data.history') }}">History</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+            </ol>
+        </nav>
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="h3"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>{{ title }}</h1>
+            <a href="{{ url_for('health_data.history') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Back to History
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="parameter-selector">
+            <a href="{{ url_for('health_data.view_graph', parameter='weight', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'weight' %}active{% endif %}">
+                <i class="bi bi-speedometer2 me-2"></i>Weight
+            </a>
+            <a href="{{ url_for('health_data.view_graph', parameter='blood_pressure', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'blood_pressure' %}active{% endif %}">
+                <i class="bi bi-heart-pulse me-2"></i>Blood Pressure
+            </a>
+            <a href="{{ url_for('health_data.view_graph', parameter='heart_rate', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'heart_rate' %}active{% endif %}">
+                <i class="bi bi-heart me-2"></i>Heart Rate
+            </a>
+            <a href="{{ url_for('health_data.view_graph', parameter='steps', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'steps' %}active{% endif %}">
+                <i class="bi bi-lightning me-2"></i>Steps
+            </a>
+            <a href="{{ url_for('health_data.view_graph', parameter='sleep_duration', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'sleep_duration' %}active{% endif %}">
+                <i class="bi bi-moon me-2"></i>Sleep Duration
+            </a>
+            <a href="{{ url_for('health_data.view_graph', parameter='water_intake', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'water_intake' %}active{% endif %}">
+                <i class="bi bi-droplet me-2"></i>Water Intake
+            </a>
+            <a href="{{ url_for('health_data.view_graph', parameter='calorie_intake', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'calorie_intake' %}active{% endif %}">
+                <i class="bi bi-fire me-2"></i>Calorie Intake
+            </a>
+            <a href="{{ url_for('health_data.view_graph', parameter='stress_level', time_period=time_period, reference_date=reference_date) }}" class="parameter-pill {% if parameter == 'stress_level' %}active{% endif %}">
+                <i class="bi bi-emoji-frown me-2"></i>Stress Level
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="graph-card mb-4">
+            <div class="graph-header d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">{{ title }}</h2>
+                <div class="btn-group">
+                    <a href="{{ url_for('health_data.view_graph', parameter=parameter, time_period='week', reference_date=reference_date) }}" class="btn btn-sm btn-outline-secondary {% if time_period == 'week' %}active{% endif %}">1W</a>
+                    <a href="{{ url_for('health_data.view_graph', parameter=parameter, time_period='month', reference_date=reference_date) }}" class="btn btn-sm btn-outline-secondary {% if time_period == 'month' or not time_period %}active{% endif %}">1M</a>
+                    <a href="{{ url_for('health_data.view_graph', parameter=parameter, time_period='quarter', reference_date=reference_date) }}" class="btn btn-sm btn-outline-secondary {% if time_period == 'quarter' %}active{% endif %}">3M</a>
+                </div>
+            </div>
+            <div class="card-body p-3 text-center position-relative">
+                <div class="period-indicator">{{ period_text }}</div>
+                
+                <div class="navigation-arrows">
+                    <a href="{{ url_for('health_data.view_graph', parameter=parameter, time_period=time_period, reference_date=prev_date) }}" class="nav-arrow" title="Previous {{ time_period }}">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                    <a href="{{ url_for('health_data.view_graph', parameter=parameter, time_period=time_period, reference_date=next_date) }}" class="nav-arrow" title="Next {{ time_period }}">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </div>
+                
+                {% if graph and not no_data_in_period %}
+                <div class="graph-container">
+                    <img src="data:image/png;base64,{{ graph }}" class="img-fluid" alt="{{ title }}">
+                </div>
+                {% else %}
+                <div class="alert alert-info m-4">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    <h4 class="alert-heading">No data available</h4>
+                    <p>There is no data available for this time period. Try a different period or add some health records.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="h5 mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Understanding This Data</h3>
+            </div>
+            <div class="card-body">
+                {% if parameter == 'weight' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-speedometer2 me-2"></i>Weight Analysis</h4>
+                    <p>This graph shows your weight measurements over time. Tracking weight can help identify trends and monitor progress toward fitness goals.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>A sudden increase might indicate water retention or other temporary factors.</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Gradual changes are more indicative of true weight changes.</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Consistent monitoring is more important than any single measurement.</li>
+                    </ul>
+                </div>
+
+                {% elif parameter == 'blood_pressure' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-heart-pulse me-2"></i>Blood Pressure Guide</h4>
+                    <p>This graph displays both your systolic (top number) and diastolic (bottom number) blood pressure readings over time.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Normal: Below 120/80 mmHg</li>
+                        <li class="mb-2"><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Elevated: 120-129/<80 mmHg</li>
+                        <li class="mb-2"><i class="bi bi-exclamation-circle-fill text-danger me-2"></i>Stage 1 Hypertension: 130-139/80-89 mmHg</li>
+                        <li class="mb-2"><i class="bi bi-x-circle-fill text-danger me-2"></i>Stage 2 Hypertension: ≥140/≥90 mmHg</li>
+                    </ul>
+                </div>
+
+                {% elif parameter == 'heart_rate' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-heart me-2"></i>Heart Rate Insights</h4>
+                    <p>This graph shows your resting heart rate over time. A lower resting heart rate generally indicates better cardiovascular fitness.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Normal adult range: 60-100 beats per minute</li>
+                        <li class="mb-2"><i class="bi bi-info-circle-fill text-info me-2"></i>Athletes may have rates of 40-60 bpm</li>
+                        <li class="mb-2"><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Factors affecting heart rate: stress, medications, caffeine, activity</li>
+                    </ul>
+                </div>
+
+                {% elif parameter == 'steps' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-lightning me-2"></i>Step Count</h4>
+                    <p>This graph shows your daily step count. Increasing physical activity through walking is one of the simplest ways to improve health.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-trophy-fill text-warning me-2"></i>Recommended goal: 10,000 steps per day</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Even small increases provide health benefits</li>
+                        <li class="mb-2"><i class="bi bi-info-circle-fill text-info me-2"></i>Look for patterns in your weekly activity</li>
+                    </ul>
+                </div>
+
+                {% elif parameter == 'sleep_duration' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-moon me-2"></i>Sleep Quality</h4>
+                    <p>This graph displays your sleep duration over time. Consistent, quality sleep is essential for overall health.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Adults need 7-9 hours of sleep per night</li>
+                        <li class="mb-2"><i class="bi bi-info-circle-fill text-info me-2"></i>Consistency in sleep schedule improves quality</li>
+                        <li class="mb-2"><i class="bi bi-lightbulb-fill text-warning me-2"></i>Look for correlations between sleep and other health metrics</li>
+                    </ul>
+                </div>
+
+                {% elif parameter == 'water_intake' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-droplet me-2"></i>Hydration</h4>
+                    <p>This graph shows your daily water intake. Proper hydration is essential for numerous bodily functions.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Recommendation: About 2 liters (8 cups) per day</li>
+                        <li class="mb-2"><i class="bi bi-info-circle-fill text-info me-2"></i>Higher needs with increased activity or hot weather</li>
+                        <li class="mb-2"><i class="bi bi-lightbulb-fill text-warning me-2"></i>Spread hydration throughout the day</li>
+                    </ul>
+                </div>
+
+                {% elif parameter == 'calorie_intake' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-fire me-2"></i>Caloric Balance</h4>
+                    <p>This graph displays your daily caloric intake. Understanding your energy consumption can help with weight management and nutritional goals.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-info-circle-fill text-info me-2"></i>Needs vary based on age, gender, weight, and activity</li>
+                        <li class="mb-2"><i class="bi bi-lightbulb-fill text-warning me-2"></i>Quality of calories matters as much as quantity</li>
+                        <li class="mb-2"><i class="bi bi-graph-up-arrow text-primary me-2"></i>Look for patterns in your eating habits</li>
+                    </ul>
+                </div>
+
+                {% elif parameter == 'stress_level' %}
+                <div class="info-box">
+                    <h4><i class="bi bi-emoji-frown me-2"></i>Stress Management</h4>
+                    <p>This graph shows your self-reported stress levels over time. Managing stress is important for both mental and physical health.</p>
+                    <ul class="mt-3">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Identify patterns and potential triggers</li>
+                        <li class="mb-2"><i class="bi bi-info-circle-fill text-info me-2"></i>Note correlations with sleep and heart rate</li>
+                        <li class="mb-2"><i class="bi bi-lightbulb-fill text-warning me-2"></i>Regular relaxation techniques help reduce stress</li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="h5 mb-0"><i class="bi bi-clipboard-data me-2 text-primary"></i>Summary Statistics</h3>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Average:</span>
+                    <span class="health-value">{{ averages.get(parameter, 'N/A') }} <span class="health-unit">{{ units.get(parameter, '') }}</span></span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Minimum:</span>
+                    <span class="health-value">{{ minimums.get(parameter, 'N/A') }} <span class="health-unit">{{ units.get(parameter, '') }}</span></span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Maximum:</span>
+                    <span class="health-value">{{ maximums.get(parameter, 'N/A') }} <span class="health-unit">{{ units.get(parameter, '') }}</span></span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Last Value:</span>
+                    <span class="health-value">{{ latest.get(parameter, 'N/A') }} <span class="health-unit">{{ units.get(parameter, '') }}</span></span>
+                </div>
+                
+                <div class="mt-4">
+                    <h5 class="h6">30 Day Trend</h5>
+                    <div class="progress" style="height: 8px;">
+                        {% if trends.get(parameter) == 'up' %}
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        {% elif trends.get(parameter) == 'down' %}
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                        {% else %}
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <small class="text-muted">{{ minimums.get(parameter, 'N/A') }}</small>
+                        <small class="text-muted">{{ maximums.get(parameter, 'N/A') }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enhance navigation arrows with hover effects
+        const navArrows = document.querySelectorAll('.nav-arrow');
+        navArrows.forEach(arrow => {
+            arrow.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            });
+            
+            arrow.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.15)';
+            });
+        });
+        
+        // Add keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            const leftArrow = document.querySelector('.nav-arrow:first-child');
+            const rightArrow = document.querySelector('.nav-arrow:last-child');
+            
+            if (e.key === 'ArrowLeft' && leftArrow) {
+                e.preventDefault();
+                leftArrow.click();
+            } else if (e.key === 'ArrowRight' && rightArrow) {
+                e.preventDefault();
+                rightArrow.click();
+            }
+        });
+        
+        // Add animation for graph images
+        const graphImage = document.querySelector('.graph-container img');
+        if (graphImage) {
+            graphImage.style.opacity = '0';
+            graphImage.style.transition = 'opacity 0.5s ease';
+            
+            graphImage.addEventListener('load', function() {
+                this.style.opacity = '1';
+            });
+            
+            // Force opacity to 1 after a timeout in case load event doesn't fire
+            setTimeout(() => {
+                if (graphImage.style.opacity === '0') {
+                    graphImage.style.opacity = '1';
+                }
+            }, 500);
+        }
+    });
+</script>
+{% endblock %} 

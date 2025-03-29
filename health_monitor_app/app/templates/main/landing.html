@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Health Monitor{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="jumbotron text-center bg-primary text-white rounded shadow-lg p-5">
+                <h1 class="display-4 mb-4">Welcome to Health Monitor</h1>
+                <p class="lead">Track, monitor, and improve your health with our comprehensive health tracking solution.</p>
+                <hr class="my-4 bg-light">
+                <p class="mb-4">Sign in to access your personalized health dashboard or create a new account to get started.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-light btn-lg px-4">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-person-plus me-2"></i>Create Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features section -->
+    <div class="row mt-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="h2">Track Your Health Metrics</h2>
+            <p class="lead text-muted">Our comprehensive health monitoring platform helps you stay on top of your health</p>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-heart-pulse fs-2"></i>
+                    </div>
+                    <h3 class="h4 card-title">Vital Signs</h3>
+                    <p class="card-text">Track blood pressure, heart rate, weight, and other critical health metrics all in one place.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-graph-up fs-2"></i>
+                    </div>
+                    <h3 class="h4 card-title">Visual Trends</h3>
+                    <p class="card-text">Visualize your health data with interactive graphs to identify patterns and track improvements over time.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-info text-white d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <i class="bi bi-bell fs-2"></i>
+                    </div>
+                    <h3 class="h4 card-title">Personalized Insights</h3>
+                    <p class="card-text">Get personalized health insights and recommendations based on your data and health goals.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Call to action -->
+    <div class="row mt-4 mb-5">
+        <div class="col-12 text-center">
+            <div class="card border-0 bg-light p-4">
+                <div class="card-body">
+                    <h3>Ready to take control of your health?</h3>
+                    <p class="mb-4">Join thousands of users who are already monitoring their health with our platform.</p>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Get Started Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

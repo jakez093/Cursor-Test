@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Your Profile</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('main.profile') }}" class="needs-validation" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Completing your profile helps us provide personalized health insights and comparisons.
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.first_name.label(class="form-label") }}
+                                    {{ form.first_name(class="form-control", placeholder="Your first name") }}
+                                    {% if form.first_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.first_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.last_name.label(class="form-label") }}
+                                    {{ form.last_name(class="form-control", placeholder="Your last name") }}
+                                    {% if form.last_name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.last_name.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.gender.label(class="form-label") }}
+                                    {{ form.gender(class="form-select") }}
+                                    <small class="form-text text-muted">Used for demographic comparisons</small>
+                                    {% if form.gender.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.gender.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.date_of_birth.label(class="form-label") }}
+                                    {{ form.date_of_birth(class="form-control", type="date") }}
+                                    <small class="form-text text-muted">Used to calculate age-appropriate health metrics</small>
+                                    {% if form.date_of_birth.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.date_of_birth.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.height.label(class="form-label") }}
+                                    <div class="input-group">
+                                        {{ form.height(class="form-control", placeholder="Your height") }}
+                                        <span class="input-group-text">cm</span>
+                                    </div>
+                                    {% if form.height.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.height.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.weight.label(class="form-label") }}
+                                    <div class="input-group">
+                                        {{ form.weight(class="form-control", placeholder="Your weight") }}
+                                        <span class="input-group-text">kg</span>
+                                    </div>
+                                    {% if form.weight.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.weight.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="alert alert-warning">
+                            <i class="fas fa-lock"></i> For security reasons, please confirm your password to save changes.
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            {{ form.current_password.label(class="form-label") }}
+                            {{ form.current_password(class="form-control") }}
+                            {% if form.current_password.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.current_password.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                            <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </a>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <p>Need to adjust your settings? <a href="{{ url_for('main.settings') }}">Go to Settings</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
